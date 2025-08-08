@@ -8,8 +8,9 @@ dotenv.config()
 
     try{
 
-        mongoose.connect(process.env.MongoDB_Url).then(()=>{
-            console.log("MongoDB connected")
+       return  mongoose.connect(process.env.MongoDB_Url)
+        .then(()=>{
+            console.log("MongoDB  server connected ")
 
         }).catch((err)=>{
             console.log(err.message)

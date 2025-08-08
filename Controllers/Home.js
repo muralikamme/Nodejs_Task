@@ -1,3 +1,35 @@
+const Loginpage=async (req,res)=>{
+  try{
+
+    return res.render("Login")
+
+  }catch(err){
+    return res.status(500).json({message:"Internal Server Error"})
+
+  }
+
+}
+
+
+const SignupPage= async (req,res)=>{
+  try{
+
+    return res.render("signup")
+
+  }catch(err){
+    return res.status(500).json({message:"Internal server Error"})
+
+  }
+  
+
+}
+
+
+
+
+
+
+
 const fileupload = async (req, res) => {
     try {
       return res.render("Form");
@@ -20,4 +52,4 @@ const fileupload = async (req, res) => {
  }
   
   
-  module.exports = { fileupload, Renderimg};
+  module.exports = { fileupload, Renderimg,Loginpage,SignupPage};

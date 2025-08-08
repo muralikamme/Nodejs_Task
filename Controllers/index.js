@@ -1,4 +1,58 @@
 let Image=require("../Model/images")
+let UserData =require("../Model/images")
+
+
+
+
+
+let Logincredentials=async ()=>{
+
+  try {
+    const { email, password } = req.body;
+    console.log(email,password,"ll")
+
+    const user = await UserData.findOne({ email });
+    if (!user)
+      return res.render("index",{ message: "User not found" });
+    
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch)
+      return res.render("index",{err:"Invalid Credentials"})
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h"
+    });
+return res.redirect("/api/DashBoard")
+  //   res.status(200).json({ message: "Login successful", token });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+
+}
+
+
+let signupCredentials= async ()=>{
+
+  try {
+    const { name, email, password } = req.body;
+
+    const existingUser = await UserData.findOne({ email });
+    if (existingUser)
+      // return res.status(400).json({ message: "User already exists" });
+   return  res.render("Signup",{ message: "User already exists" }) 
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new UserData({ name, email, password: hashedPassword });
+    await user.save();
+
+   return res.render("index")
+ 
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+
+}
 
 
 
@@ -109,5 +163,5 @@ let Edit=async (req, res) => {
 };
 
 
-module.exports = { upload ,Renderimg,Delete,DataDelete,Edit};
+module.exports = {Logincredentials, signupCredentials,upload ,Renderimg,Delete,DataDelete,Edit};
 

@@ -8,10 +8,12 @@ const flash=require("connect-flash")
 
 // MongoDB connection
 const connect = require("./config/connect");
+// const LoginDBconnection=require("./config/LoginSigupConnection")
 
 dotenv.config();
 const app = express();
 connect();
+// LoginDBconnection()
 
 // Middleware
 app.use(express.json());
