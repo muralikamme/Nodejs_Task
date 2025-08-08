@@ -1,0 +1,152 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document</title>
+
+  <!-- Your existing styles -->
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f6f8;
+      margin: 20px;
+      color: #333;
+    }
+
+     h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #2c3e50;
+    }
+
+    h3 {
+      margin-top: 40px;
+      color: #34495e;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 8px;
+    }
+
+    /* Container for each image */
+    .image-container {
+      margin: 15px;
+      display: inline-block;
+      text-align: center;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 15px;
+      width: 180px;
+      vertical-align: top;
+    }
+
+    .image-container img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 6px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+      margin-bottom: 12px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .image-container img:hover {
+      transform: scale(1.05);
+    }
+
+    /* Forms styling */
+    form {
+      margin: 6px 0;
+    }
+
+    form button {
+      background-color: #3498db;
+      border: none;
+      color: white;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.3s ease;
+    }
+
+    form button:hover {
+      background-color: #2980b9;
+    }
+
+    form input[type="file"] {
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    hr {
+      margin: 40px 0;
+      border: none;
+      border-top: 1px solid #ddd;
+    }
+
+    /* ... your other styles ... */
+  </style>
+
+  <!-- Toastr CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
+</head>
+<body>
+  <h1>Upload images</h1>
+
+  
+  {{#each data}}
+    <h3>Document ID: {{_id}}</h3>
+
+    {{#each files}}
+      <div class="image-container">
+        <img src="/{{removepublic this}}" alt="Image {{@index}}" />
+        <br />
+        <form action="/api/delete/{{../_id}}/{{@index}}" method="POST">
+          <button type="submit">Delete</button>
+        </form>
+        <form
+          action="/api/edit/{{../_id}}/{{@index}}"
+          method="POST"
+          enctype="multipart/form-data"
+        >
+          <input type="file" name="newImage" required />
+          <button type="submit">Edit</button>
+        </form>
+      </div>
+    {{/each}}
+
+    <hr />
+  {{/each}}
+
+  <!-- jQuery first -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Toastr JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <script>
+    toastr.options = {
+      closeButton: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      timeOut: 3000,
+    };
+
+    // Show flash messages with toastr
+    {{#if success_msg}}
+      toastr.success("{{success_msg}}");
+    {{/if}}
+
+    {{#if error_msg}}
+      toastr.error("{{error_msg}}");
+    {{/if}}
+  </script>
+</body>
+</html>
