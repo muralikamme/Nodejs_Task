@@ -7,12 +7,14 @@ let uploaded=require("../config/storage")
 
 let router=express.Router()
 
-let {Logincredentials,signupCredentials,upload,Renderimg,Delete,DataDelete,Edit}=require("../Controllers/index")
+let {Logincredentials,signupCredentials,upload,Renderimg,Delete,DataDelete,Edit,UserDataDelete}=require("../Controllers/index")
 
-router.get("/login", Home.Loginpage);
+router.get("/Login", Home.Loginpage);
 router.get("/signup", Home.SignupPage);
 router.post("/login", Logincredentials);
 router.post("/signup", signupCredentials);
+
+router.post("/UserDataDelete",UserDataDelete)
 
 
 router.get("/fileupload",Home.fileupload)

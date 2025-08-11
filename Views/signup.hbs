@@ -68,6 +68,10 @@
       text-decoration: underline;
     }
   </style>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
 </head>
 <body>
 
@@ -78,8 +82,31 @@
     <input type="text" name="email" placeholder="Email" required />
     <input type="text" name="password" placeholder="Password" required />
     <input type="submit" value="Signup" />
-    <span>User already exists? <a href="/api/login">Login</a></span>
+    <span>User already exists? <a href="/api/Login">Login</a></span>
   </form>
+
+  <!-- jQuery first -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Toastr JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <script>
+    toastr.options = {
+      closeButton: true,
+      progressBar: true,
+      positionClass: "toast-top-right",
+      timeOut: 3000,
+    };
+
+    // Show flash messages with toastr
+    {{#if success_msg}}
+      toastr.success("{{success_msg}}");
+    {{/if}}
+
+    {{#if error_msg}}
+      toastr.error("{{error_msg}}");
+    {{/if}}
+  </script>
 
 </body>
 </html>

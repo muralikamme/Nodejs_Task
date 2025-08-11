@@ -100,6 +100,10 @@
 </head>
 <body>
   <h1>Upload images</h1>
+  <h1>Welcome, {{email}}</h1> <button  style=" text-color:#f2f7fa; padding:10px;background-color:#0793f1  ;width:100px ; border:none ; border-radius:10px">
+    <a href="/api/login" style="text-decoration: none;  ">
+    Logout</a></button>
+  <img src="public/images/2-2.pdf" alt="">
 
   
   {{#each data}}
@@ -111,7 +115,7 @@
         <br />
         <form action="/api/delete/{{../_id}}/{{@index}}" method="POST">
           <button type="submit">Delete</button>
-        </form>
+        </form>  
         <form
           action="/api/edit/{{../_id}}/{{@index}}"
           method="POST"

@@ -37,7 +37,8 @@ hbs.registerHelper("removepublic", function (filePath) {
 app.use(session({
   secret:"12345",
   resave:false,
-  saveUninitialized:false
+  saveUninitialized:false,
+  cookie: { maxAge: 1000 * 60 * 60 }    // 1 hr
   
 }))
 
@@ -50,6 +51,8 @@ app.use((req,res,next)=>{
 
   res.locals.success_msg=req.flash("success_msg")
   res.locals.error_msg=req.flash("error_msg")
+  
+  
   next()
 
 })
