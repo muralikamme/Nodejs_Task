@@ -1,71 +1,91 @@
+let express=require("express")
+let bcrypt=require("bcryptjs")
+let jwt=require("jsonwebtoken")
+let mongoose=require("mongoose")
+
 let Image=require("../Model/images")
-let UserData =require("../Model/images")
+let userCredential =require("../Model/index")
 
 
 
 
 
-let Logincredentials=async ()=>{
+// LOGIN API
 
+const Logincredentials = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log(email,password,"ll")
+    console.log(email, password, "ll");
 
-    const user = await UserData.findOne({ email });
-    if (!user)
-      return res.render("index",{ message: "User not found" });
-    
+    const user = await userCredential.findOne({ email });
+    if (!user) {
+      req.flash("error_msg", "User not found");
+      return res.render("Login");  // redirect to login page to show flash
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch)
-      return res.render("index",{err:"Invalid Credentials"})
+
+    if (!isMatch) {
+      req.flash("error_msg", "Invalid Credentials");
+      return res.render("Login");  // redirect to login page to show flash
+    }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: "1h"
+      expiresIn: "1h",
     });
-return res.redirect("/api/DashBoard")
-  //   res.status(200).json({ message: "Login successful", token });
+
+    // Store token in cookie/session if needed here
+    // res.cookie("token", token, { httpOnly: true });  // optional
+    req.session.userEmail=email
+    console.log(req.session,"pppoopop");
+     req.flash("success_msg","Login successful")
+    return res.redirect("/api/fileupload" );  // successful login redirect
   } catch (err) {
+    console.error(err);
     res.status(500).json({ error: err.message });
   }
+};
 
-}
-
-
-let signupCredentials= async ()=>{
-
+// SIGNUP API
+const signupCredentials = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    let { name, email, password } = req.body;
+    
 
-    const existingUser = await UserData.findOne({ email });
-    if (existingUser)
-      // return res.status(400).json({ message: "User already exists" });
-   return  res.render("Signup",{ message: "User already exists" }) 
+    const existingUser = await userCredential.findOne({ email });
+    if (existingUser) {
+      req.flash("error_msg", "User already exists");
+      return res.render("signup"); // redirect so flash shows on the next page load
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+console.log(req.body);
+password=hashedPassword;
+    const user =  userCredential.create({name, email, password });
+    // await user.save();
 
-    const user = new UserData({ name, email, password: hashedPassword });
-    await user.save();
-
-   return res.render("index")
- 
+    req.flash("success_msg", "Signup successful! Please log in.");
+    return res.redirect("/api/Login"); // redirect after signup success
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error(err);
+    res.status(500).send("Internal Server Error");
   }
-
-}
-
+};
 
 
 
-// Upload Controller
+
+// FILEUPLOAD API
 const upload = async (req, res) => {
   try {
     // console.log(req.body,"lll")
     const files = req.files.map((file) => file.path);
-    // console.log(files,"ooooo")  // multer sets file.path
-    const img = new Image({ files });
+    console.log(files,req.session,"charan123")  // multer sets file.path
+    const img = Image.create({ files:files,userId:req.session.userEmail });
 
-    await img.save();
+    // await img.save();
+    console.log(req.session,"000000");  
+
 
   req.flash("success_msg","File Uploaded  Successfully ")
     return res.redirect("/api/Renderimg");
@@ -76,15 +96,20 @@ const upload = async (req, res) => {
 };
 
 
-// Rendering Controller
+// DATA FETCHING API FROM DB
 
 const Renderimg=async (req,res)=>{
 
+
     try{
-        let data=await Image.find()
+      console.log(req.session,"12345678765");
+
+        let data=await Image.find({userId:req.session.userEmail})
+        console.log(data,"dddddd")
+        
         // console.log(data,"kkkk")
         req.flash("success_msg","Data Recieved from DB !")
-        return await res.render("EditDelete",{data})
+        return await res.render("EditDelete",{data,email: req.session.userEmail})
 
 
 
@@ -99,7 +124,7 @@ const Renderimg=async (req,res)=>{
 }
 
 
-// Delete API
+// IMAGE DELETEING API
 
 // router.post("/delete/:id/:index"), 
 let Delete=async (req, res) => {
@@ -121,7 +146,21 @@ let Delete=async (req, res) => {
   }
 };
 
+// Userdata delete api
+let UserDataDelete=async (req,res)=>{
+  try{
+ await userCredential.deleteMany()
+  //  ss.save()
+  req.flash("success_msg","data deleted  successfully ")
+   return res.status(200).json({mess:"data deleted  successfully "})
 
+  }catch(err){
+    return res.status(500).json({error:err.mesage})
+
+  }
+}
+
+//Images DATA DELETEING API
 let DataDelete=async (req,res)=>{
   try{
  await Image.deleteMany()
@@ -138,7 +177,7 @@ let DataDelete=async (req,res)=>{
 
 
 
-// Edit API
+// IMAGE REPLACE API
 
 
 // router.post("/edit/:id/:index", upload.single("newImage")), 
@@ -163,5 +202,5 @@ let Edit=async (req, res) => {
 };
 
 
-module.exports = {Logincredentials, signupCredentials,upload ,Renderimg,Delete,DataDelete,Edit};
+module.exports = {Logincredentials, signupCredentials,upload ,Renderimg,Delete,DataDelete,Edit,UserDataDelete};
 

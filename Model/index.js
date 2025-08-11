@@ -5,6 +5,7 @@ let mongoose=require("mongoose")
 
 
 let LoginSingupSchema=new mongoose.Schema({
+// 
     name: { type:String},
     email: { type: String, unique: true },
     password: {type: String},
@@ -12,7 +13,7 @@ let LoginSingupSchema=new mongoose.Schema({
   });
 
 
-  let Userdata=mongoose.model("userData",LoginSingupSchema)
+  let userCredential=mongoose.model("userCredential",LoginSingupSchema)
 
 
-  module.exports=Userdata
+  module.exports=userCredential
