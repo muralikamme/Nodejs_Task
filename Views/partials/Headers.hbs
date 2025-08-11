@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Toastr CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
+  />
+</head>
+<body>
+
+    <!-- jQuery first -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <!-- Toastr JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+  <script>
+   toastr.options = {
+  // Basic Behavior
+  closeButton: true,       // Show close button
+  progressBar: true,       // Show progress bar (countdown)
+  timeOut: 3000,           // Auto-close after 3s (set 0 to disable)
+  extendedTimeOut: 1000,    // Additional time after hover/click
+
+  // Positioning
+  positionClass: "toast-top-right",  // Options: toast-top-right, toast-bottom-right, toast-top-left, toast-bottom-left, toast-top-full-width, toast-bottom-full-width
+
+  // Interaction
+  preventDuplicates: true, // Block duplicate toasts
+  newestOnTop: true,       // New toasts appear on top
+  draggable: true,         // Allow dragging to dismiss
+  closeOnHover: true,      // Close on mouse hover
+  tapToDismiss: false,     // Close on click (if not using buttons)
+
+  // Styling & Animations
+  showEasing: "swing",     // Animation easing (swing, linear)
+  hideEasing: "linear",
+  showMethod: "fadeIn",    // fadeIn, slideDown, etc.
+  hideMethod: "fadeOut",
+  
+  // Accessibility
+  ariaHidden: false,       // Hide from screen readers when closed
+  escapeHtml: false,       // Allow HTML in messages (careful with XSS!)
+
+  // Callbacks
+  onclick: null,           // Callback when toast is clicked
+  onCloseClick: null,      // Callback when close button is clicked
+  onShown: null,           // Callback after toast appears
+  onHidden: null           // Callback after toast disappears
+};
+
+    // Show flash messages with toastr
+    {{#if success_msg}}
+      toastr.success("{{success_msg}}");
+    {{/if}}
+
+    {{#if error_msg}}
+      toastr.error("{{error_msg}}");
+    {{/if}}
+  </script>
+    
+</body>
+</html>

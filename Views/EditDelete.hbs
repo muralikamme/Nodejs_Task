@@ -92,22 +92,18 @@
     /* ... your other styles ... */
   </style>
 
-  <!-- Toastr CSS -->
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css"
-  />
 </head>
 <body>
-  <h1>Upload images</h1>
-  <h1>Welcome, {{email}}</h1> <button  style=" text-color:#f2f7fa; padding:10px;background-color:#0793f1  ;width:100px ; border:none ; border-radius:10px">
+  {{>Headers}}
+  <h1>Uploaded images</h1>
+  <h1>Welcome, {{email}}</h1> <button  style=" text-color:#f2f7fa; padding:10px;background-color:#0793f1  ;width:100px ; border:none ; border-radius:10px; margin-left:1200px">
     <a href="/api/login" style="text-decoration: none;  ">
     Logout</a></button>
   <img src="public/images/2-2.pdf" alt="">
 
-  
+  <div id="toaster"></div>
   {{#each data}}
-    <h3>Document ID: {{_id}}</h3>
+    {{!-- <h3>Document ID: {{_id}}</h3> --}}
 
     {{#each files}}
       <div class="image-container">
@@ -130,27 +126,6 @@
     <hr />
   {{/each}}
 
-  <!-- jQuery first -->
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <!-- Toastr JS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-  <script>
-    toastr.options = {
-      closeButton: true,
-      progressBar: true,
-      positionClass: "toast-top-right",
-      timeOut: 3000,
-    };
-
-    // Show flash messages with toastr
-    {{#if success_msg}}
-      toastr.success("{{success_msg}}");
-    {{/if}}
-
-    {{#if error_msg}}
-      toastr.error("{{error_msg}}");
-    {{/if}}
-  </script>
+  <script></script>
 </body>
 </html>

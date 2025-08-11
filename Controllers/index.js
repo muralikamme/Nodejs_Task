@@ -37,7 +37,7 @@ const Logincredentials = async (req, res) => {
     // Store token in cookie/session if needed here
     // res.cookie("token", token, { httpOnly: true });  // optional
     req.session.userEmail=email
-    console.log(req.session,"pppoopop");
+    // console.log(req.session,"pppoopop");
      req.flash("success_msg","Login successful")
     return res.redirect("/api/fileupload" );  // successful login redirect
   } catch (err) {

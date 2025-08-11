@@ -22,6 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // View engine setup
 app.set("views", path.join(__dirname, "views")); // corrected: 'view' ➝ 'views'
 app.set("view engine", "hbs");
+hbs.registerPartials(path.join(__dirname, "Views","partials"))
 app.use(express.static(path.join(__dirname, 'public')))
 
 hbs.registerHelper("removepublic", function (filePath) {

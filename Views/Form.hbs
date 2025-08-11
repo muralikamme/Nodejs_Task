@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{{!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -46,6 +46,7 @@
   </style>
 </head>
 <body>
+  {{>Headers}}
 
   <form action="/api/upload" method="POST" enctype="multipart/form-data">
     <h2>Upload Files</h2>
@@ -57,5 +58,195 @@
     
   </script>
 
+</body>
+</html> --}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>File Upload</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #4361ee;
+      --primary-dark: #3a56d4;
+      --success: #4cc9f0;
+      --text: #2b2d42;
+      --light: #f8f9fa;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .upload-container {
+      background: white;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      animation: fadeInUp 0.6s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .upload-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .upload-header h2 {
+      color: var(--text);
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .upload-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .file-input-container {
+      position: relative;
+      border: 2px dashed #ced4da;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .file-input-container:hover {
+      border-color: var(--primary);
+      background-color: rgba(67, 97, 238, 0.05);
+    }
+
+    .file-input-label {
+      display: block;
+      font-size: 16px;
+      color: var(--text);
+      margin-bottom: 15px;
+    }
+
+    .file-input {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .upload-icon {
+      font-size: 48px;
+      color: var(--primary);
+      margin-bottom: 15px;
+    }
+
+    .upload-hint {
+      color: #6c757d;
+      font-size: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .btn:hover {
+      background-color: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+    }
+
+    .file-preview {
+      margin-top: 20px;
+      display: none;
+    }
+
+    .file-preview.active {
+      display: block;
+    }
+
+    .file-name {
+      font-size: 14px;
+      color: var(--text);
+      text-align: center;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  {{>Headers}}
+
+  <div class="upload-container">
+    <div class="upload-header">
+      <h2>Upload Your Files</h2>
+      <p class="upload-hint">Supports multiple files at once</p>
+    </div>
+
+    <form class="upload-form" action="/api/upload" method="POST" enctype="multipart/form-data">
+      <div class="file-input-container">
+        <div class="upload-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="17 8 12 3 7 8"></polyline>
+            <line x1="12" y1="3" x2="12" y2="15"></line>
+          </svg>
+        </div>
+        <label class="file-input-label">Click to browse or drag & drop files</label>
+        <input type="file" class="file-input" name="files" multiple>
+        <p class="upload-hint">Max file size: 10MB</p>
+      </div>
+
+      <div class="file-preview" id="file-preview">
+        <p class="file-name" id="selected-files">No files selected</p>
+      </div>
+
+      <button type="submit" class="btn">
+        Upload Files
+      </button>
+    </form>
+  </div>
+
+  <script src="./form.js">
+   
+  </script>
 </body>
 </html>
